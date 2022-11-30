@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+
+<header>
+
+	{% include "profile-header.html" %}
+
+</header>
+
+<main>
+    <!-- gallery section -->
+	<div class="container">
+		<!-- if pictures and user not blocked -->
+		{% if current_user not in user.blocked and user not in current_user.blocked %}
+		{% if pictures.items or pictures %}
+
+		<!-- gallery div -->
+		<div class="gallery">
+		{% include "gallery-div.html" %}
+		</div>
+
+		<!-- if no pictures -->
+		{% else %}
+		<h1>
+			<i class="bi bi-emoji-frown"></i><br/>
+			<br/>
+			No posts yet
+		</h1>
+		{% endif %}
+
+		<!-- if user blocked -->
+		{% else %}
+		<h1>
+			<i class="bi bi-x-circle-fill"></i><br/>
+			<br/>
+			You cannot view this user's profile.
+		</h1>
+	</div>
+	{% endif %}
+	<!-- gallery section end-->
+</main>
+
+{% endblock %}

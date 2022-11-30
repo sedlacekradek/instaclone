@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="l-main">
+    <div class="l-main__img">
+        <img src="{{ url_for ('static', filename= 'img/homepage.png') }}" alt="Smartphones"/>
+    </div>
+    <div class="l-user">
+        <div class="c-panel group">
+            <img class="c-panel__img" src="{{ url_for ('static', filename= 'img/instagram.svg') }}" alt="Instagram"/>
+            <div class="c-panel__form">
+
+                <!--form section-->
+                <form method="post">
+                    {{ form.hidden_tag() }} {{ form.email(class="c-panel__input mb-2")}} {{
+                    form.password(class="c-panel__input")}}
+                    <br/>
+                    {{ form.submit(class="c-btn-dark")}}
+                    <br/>
+                    <!--error message-->
+                    {% for field, errors in form.errors.items() %}
+                    <br/>
+                    <small class="form-text text-danger">
+                        {{ ', '.join(errors) }}
+                    </small>
+                    {% endfor %}
+                </form>
+                <!--form section end-->
+
+                <hr>
+                <div class="mb-4">
+                    <a href="{{ url_for ('auth.password_reset')}}">Forgot password?</a><br/>
+                    <a href="{{ url_for ('auth.demo_user')}}">Log In as a demo user</a>
+                </div>
+            </div>
+        </div>
+        <div class="signup group">
+            <p>Don't have an account?<br>
+                <a href="{{ url_for ('auth.signup')}}">Sign up</a>
+            </p>
+        </div>
+        <div class="mt-2">
+
+            <!--contact icons-->
+            <p>Reach Out</p>
+            <div class="contact-icons">
+                <a href="https://www.facebook.com/sedlacek.radek/"><i class="contact-icon bi bi-facebook"></i></a>
+                <a href="https://github.com/sedlacekradek"><i class="contact-icon bi bi-github"></i></a>
+                <a href="mailto:sedlacek.radek@email.cz"><i class="contact-icon bi bi-envelope-fill"></i></a>
+            </div>
+            <!--contact  end-->
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

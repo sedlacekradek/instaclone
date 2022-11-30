@@ -1,0 +1,15 @@
+Index: web/.env
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>WT_SECRET=\"secret_key\"\r\nMAIL_DEFAULT_SENDER=\"pythonsmtpproject@gmail.com\"\r\nMAIL_USERNAME=\"pythonsmtpproject@gmail.com\"\r\nMAIL_PASSWORD=\"bcqdmnsuddwespix\"\r\nSQLALCHEMY_DATABASE_URI=\"sqlite:///database.db\"\r\nYOUR_API_KEY=\"TRCDQcfvxJ61vBg3rjyT7vMjxtfwhWnN\"\r\n#ELASTICSEARCH_URL=http://192.168.0.193:9200/
+===================================================================
+diff --git a/web/.env b/web/.env
+--- a/web/.env	
++++ b/web/.env	
+@@ -4,4 +4,5 @@
+ MAIL_PASSWORD="bcqdmnsuddwespix"
+ SQLALCHEMY_DATABASE_URI="sqlite:///database.db"
+ YOUR_API_KEY="TRCDQcfvxJ61vBg3rjyT7vMjxtfwhWnN"
++MY_IP="185.224.112.27"
+ #ELASTICSEARCH_URL=http://192.168.0.193:9200/
+\ No newline at end of file

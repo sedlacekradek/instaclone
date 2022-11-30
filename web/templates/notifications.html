@@ -1,0 +1,46 @@
+<!--send HTMX request for div update every 60s-->
+<div id="notifications"
+    hx-get="/notifications/noread"
+    hx-trigger="every 60s"
+    hx-swap="outerHTML"
+    hx-target="#notifications">
+
+    <!--call python function for new notifications-->
+    {% set new_notifications = current_user.new_notifications() %}
+
+    <!--update last_read_time when user check their notifications-->
+    <a data-bs-toggle="dropdown"
+    hx-get="/notifications/read"
+    hx-trigger="click"
+    hx-target="#heart-icon"
+    hx-swap="outerHTML"
+        >
+
+    <div id="heart-icon">
+         <!--if new_notifications change icon accordingly-->
+        <i  class="bi menu-icon {{'bi-heart-fill text-danger' if new_notifications else 'bi-heart' }}"></i></div></a>
+        <div class="dropdown-menu">
+         <!--if new_notifications show them in drop-down menu-->
+        {% if g.notifications_received.all()|count > 0 %}
+        {% for notification in g.notifications_received.all()[0:20] %}
+        <a class="dropdown-item" href="{{ notification.link }}">
+
+        <!--icon according to notification type-->
+         {% if notification.type == "comment" %}
+        <i class="bi bi-person-lines-fill mx-1 text-success"></i>
+         {% elif notification.type == "like" %}
+        <i class="bi bi-person-heart mx-1 text-danger"></i>
+         {% elif notification.type == "follow" %}
+        <i class="bi bi-person-plus-fill mx-1 text-primary"></i>
+         {% endif %}
+
+        {{ notification.timestamp|datetime_format }} {{ notification.body }}</a>
+        <div class="dropdown-divider"></div>
+        {% endfor %}
+        <!--if no notifications-->
+        {% else %}
+        <div class="mx-3">You have no notifications</div>
+        {% endif %}
+    </div>
+
+</div>

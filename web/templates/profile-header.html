@@ -1,0 +1,108 @@
+<div class="container" id="profile-header">
+    <div class="profile">
+
+        <!--image-->
+        <div class="profile-image">
+            <img src="{{ user.avatar }}">
+        </div>
+
+        <!--stats-->
+        <div class="profile-stats">
+            <ul>
+                <!--posts-->
+                <li><span class="profile-stat-count">{{ user.pictures|count }}</span> posts</li>
+                <!--followers-->
+                <li><a data-bs-toggle="dropdown" class="black">
+                    <span class="profile-stat-count">{{ user.followers.all()|count }}</span> followers</a>
+                    <!--followers dropdown-->
+                    <div class="dropdown-menu">
+                        {% for follower in user.followers.all() %}
+                        <div class="mt-1"><img src="{{ follower.avatar }}" class="profile-img-small mx-5">
+                            <a class="black" href="{{url_for('views.profile', id=follower.id)}}">{{ follower.username }}</a>
+                            {% if follower.id != current_user.id %}
+                            <a class="btn btn-primary btn-sm mx-5 right"
+                              hx-get="/follow/{{ follower.id }}/{{ user.id }}"
+                              hx-trigger="click"
+                              hx-swap="outerHTML"
+                              hx-target="#profile-header"
+                            >{{"unfollow user" if follower in current_user.followed.all() else "follow user"}}</a>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </li>
+
+                <!--following-->
+                <li><a data-bs-toggle="dropdown" class="black">
+                    <span class="profile-stat-count">{{ user.followed.all()|count }}</span> following</a>
+                    <!--followers dropdown-->
+                    <div class="dropdown-menu">
+                        {% for followed in user.followed.all() %}
+                        <div class="mt-1"><img src="{{ followed.avatar }}" class="profile-img-small mx-5">
+                            <a class="black" href="{{url_for('views.profile', id=followed.id)}}">{{ followed.username }}</a>
+                            {% if followed.id != current_user.id %}
+                            <a class="btn btn-primary btn-sm mx-5 right"
+                               hx-get="/follow/{{ followed.id }}/{{ user.id }}"
+                               hx-trigger="click"
+                               hx-swap="outerHTML"
+                               hx-target="#profile-header"
+                            >{{"unfollow user" if followed in current_user.followed.all() else "follow user"}}</a>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!--bio-->
+        <div class="profile-bio">
+            <p><span class="profile-real-name">{{ user.username }}</span>
+                {% if user != current_user %}
+                <!--follow button-->
+                <button class="mx-3 mb-2 btn btn-outline-primary btn-sm"
+                        hx-get="/follow/{{ user.id }}/{{ user.id }}"
+                        hx-trigger="click"
+                        hx-swap="outerHTML"
+                        hx-target="#profile-header"
+                        {{ 'disabled' if current_user in user.blocked or user in current_user.blocked }}>
+                        {{"unfollow user" if user in current_user.followed.all() else "follow user"}}
+                </button>
+
+                <!--message button-->
+                <button class="mx-3 mb-2 btn btn-outline-secondary btn-sm"
+                    {{'disabled' if current_user in user.blocked or user in current_user.blocked }}>
+                    <a class="text-info" href="{{ url_for ('views.chat', id=user.id) }}">send a message</a>
+                </button>
+
+                <!--block button-->
+                <button class="mx-3 mb-2 btn btn-outline-danger btn-sm"
+                        hx-get="/block/{{ user.id }}"
+                        hx-trigger="click"
+                        hx-swap="outerHTML"
+                        hx-target="#profile-header">
+                    {{"unblock user" if user in current_user.blocked.all() else "block user"}}
+                </button>
+                {% endif %}
+
+                <br>
+                <!--description-->
+                {{user.description }}
+            </p>
+            <hr>
+        </div>
+
+        <!--if viewing own profile - show my posts/bookmark icons-->
+        {% if current_user == user %}
+        <div>
+            <a class="text-dark" href="{{ url_for('views.bookmarked', id=user.id)}}"><i
+                    class="bi {{'bi-bookmark-fill' if 'bookmarks' in active else 'bi-bookmark' }} m-2"></i> Saved </a>
+            <span class="mx-5">|</span>
+            <a class="text-dark" href="{{ url_for('views.profile', id=current_user.id) }}"><i
+                    class="bi {{'bi-grid-3x3-gap-fill' if 'gallery' in active else 'bi-grid-3x3-gap' }} m-2"> </i>My
+                Posts</a>
+        </div>
+        {% endif %}
+    </div>
+
+</div>

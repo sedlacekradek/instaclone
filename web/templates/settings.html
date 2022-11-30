@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block content %}
+
+<main class="main-container">
+	<section class="content-container">
+		<div class="container contact">
+			<div class="row">
+
+                <!--colored section-->
+				<div class="col-md-3 instagram">
+					<div class="contact-info">
+						<i class="bi bi-cloud-upload icon-big"></i>
+						<h2>Settings</h2>
+						<h4>Adjust your profile settings.</h4>
+					</div>
+				</div>
+
+				<!--content section -->
+				<div class="col-md-9">
+					<!--form -->
+					<form method="POST" enctype="multipart/form-data">
+						{{ form.hidden_tag() }}
+						<div class="contact-form">
+							<div class="form-group">
+								<label class="control-label col-sm-2 left">{{ form.file.label }}</label>
+								<div class="col-sm-10">
+									{{ form.file(class="form-control mb-3")}}
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2 left">{{ form.description.label }}</label>
+								<div class="col-sm-10">
+									{{ form.description(class="form-control mb-3")}}
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-5 border ml-0 profile-delete">
+									<a data-bs-toggle="modal" data-bs-target="#delete">
+										<h4 class="profile-delete-text">Delete profile</h4>
+									</a>
+								</div>
+
+								<div class="form-group col-5 border" data-toggle="tooltip" data-placement="top" title="Do not recommend my profile to other users.">
+									<label class="control-label">{{ form.not_recommend.label }}</label>
+									<br />
+									{{ form.not_recommend(class="form-check-input larger mb-3")}}
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-offset-2 col-sm-10">
+									<br />
+									{{ form.submit (class= "btn btn-dark") }}
+								</div>
+								<!--error message-->
+								{% for field, errors in form.errors.items() %}
+								<br />
+								<br />
+								<small class="form-text text-danger">
+									{{ ', '.join(errors) }}
+								</small>
+								{% endfor %}
+							</div>
+						</div>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</section>
+</main>
+
+<!-- Modal -->
+<div class="modal fade" id="delete" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+            <!--modal head-->
+            <div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Delete {{ current_user.username }}'s profile</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+			</div>
+
+            <!--modal body-->
+			<div class="modal-body">
+				This action cannot be undone. This will permanently delete {{ current_user.username }}'s profile and all uploaded pictures.<br />
+				<br />
+				Please type <span class="text-danger">"delete {{ current_user.username }}"</span> and click the delete button to confirm.<br />
+				<br />
+
+                <!--delete form-->
+				<form method="POST" enctype="multipart/form-data">
+					{{ delete_form.hidden_tag() }} {{ delete_form.confirmation}}
+					<br />
+					<br />
+					{{ delete_form.delete(class="btn btn-outline-danger") }}
+					<!--error message-->
+					{% for field, errors in delete_form.errors.items() %}
+					<br />
+					<br />
+					<small class="form-text text-danger">
+						{{ ', '.join(errors) }}
+					</small>
+					{% endfor %}
+				</form>
+
+			</div>
+
+		</div>
+	</div>
+</div>
+
+{% endblock %}

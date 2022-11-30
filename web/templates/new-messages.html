@@ -1,0 +1,13 @@
+<!--send HTMX request to update div every 30s-->
+        <div id="new-messages"
+            hx-get="/messages"
+            hx-trigger="every 30s"
+            hx-swap="outerHTML"
+            hx-target="#new-messages">
+
+            <!--call python function for new messages-->
+            {% set new_messages = current_user.new_messages() %}
+            <a href="{{ url_for('views.chat_central') }}">
+                <i  class="bi menu-icon {{'bi-send-fill text-primary' if new_messages else 'bi-send' }}"></i>
+            </a>
+        </div>

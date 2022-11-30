@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+
+<main class="main-container">
+	<section class="content-container">
+		<div class="container contact">
+			<div class="row">
+
+                <!--colored section-->
+				<div class="col-md-3 instagram">
+					<div class="contact-info">
+						<i class="bi bi-telegram icon-big"></i>
+						<h2>Chat Central</h2>
+						<h4>If I don't reply in five minutes, just wait longer.</h4>
+					</div>
+				</div>
+
+				<!--content section-->
+				<div class="col-md-9 scrollable">
+					{% set new_messages = current_user.new_messages() %}
+                    {% for contact in contacts %}
+
+					<!--contact list-->
+					<a class="black" href="{{url_for('views.chat', id=contact.id)}}">
+						<div class="card popup">
+							<div class="card-body">
+								<div class="media align-items-center">
+									<img src="{{ contact.avatar }}" class="profile-img-big mr-3" />
+									<div class="media-body overflow-hidden">
+										<h5 class="card-text mb-0">{{ contact.username }}</h5>
+										<!--new message notification-->
+										{% for message in new_messages %}
+                                        {% if message.author == contact %}
+										<p class="card-text text-uppercase animate-charcter">New message</p>
+										{% endif %}
+                                        {% endfor %}
+									</div>
+								</div>
+							</div>
+						</div>
+					</a>
+					{% endfor %}
+				</div>
+
+            </div>
+		</div>
+	</section>
+</main>
+
+{% endblock %}

@@ -1,0 +1,46 @@
+<!--update div every 0.5s-->
+<div id="message-div" class="chat-message"
+            hx-get="/refresh-messages/{{ user.id }}"
+            hx-trigger="every 500ms"
+            hx-swap="outerHTML"
+            hx-target="#message-div">
+
+
+<div class="chat px-0">
+    <!--pagination if over 30 messages-->
+    {% if messages|count > page+30 %}
+    <a
+            hx-get="/load-messages/{{ user.id }}/{{ page }}"
+            hx-trigger="click"
+            hx-swap="outerHTML"
+            hx-target="#message-div"
+    >load previous</a>
+    {% endif %}
+
+    <!--show messages-->
+    {% for message in messages[-page-30:] %}
+    {% if message.author == current_user %}
+        <div data-toggle="tooltip" data-placement="bottom" title="{{ message.timestamp }}"  data-time="{{ message.timestamp|datetime_format }}" class="left msg sent mt-3 mb-2">{{ message.body }}</div>
+    {% else %}
+        <div data-toggle="tooltip" data-placement="bottom" title="{{ message.timestamp }}" data-time="{{ message.author.username }} | {{ message.timestamp|datetime_format }}" class="left msg rcvd mt-3 mb-2">{{ message.body }}</div>
+    {% endif %}
+    {% endfor %}
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+		let scroll_to_bottom = document.getElementById('message-div');
+		scroll_to_bottom.scrollIntoView(false);
+</script>
+</div>
+

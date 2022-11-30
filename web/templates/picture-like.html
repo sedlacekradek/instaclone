@@ -1,0 +1,9 @@
+<div id="picture-likes">
+    <a
+            hx-get="/like-picture/{{ picture.id }}"
+            hx-trigger="click"
+            hx-swap="outerHTML"
+            hx-target="#picture-likes">
+        <!-- check if user already liked picture and change class accordingly-->
+        <i class="bi {{'bi-heart-fill text-danger' if current_user.id in picture.likes|map(attribute='author_id')|list else 'bi-heart' }} menu-icon mx-2"></i></a>
+</div>

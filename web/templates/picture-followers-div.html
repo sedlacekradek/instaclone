@@ -1,0 +1,36 @@
+<div class="left" id="likes">
+
+    <!--call python function to get mutual_likes string-->
+    {% set mutual_likes = picture.mutual_likes() %}
+
+    <!--dropdown menu of all users that liked picture-->
+    <a data-bs-toggle="dropdown" class="text-muted small">{{ mutual_likes }}</a>
+    <div class="dropdown-menu">
+        {% for like in picture.likes %}
+        <div class="mx-3 mb-1 mt-2"><img src="{{ like.author.avatar }}" class="profile-img-small mx-2">
+            <a class="black" href="{{url_for('views.profile', id=like.author.id)}}">{{ like.author.username }}</a>
+            {% if like.author.id != current_user.id %}
+                <a class="btn btn-primary btn-sm mx-5 right"
+                hx-get="/follow/{{ like.author.id }}/{{ picture.id }}"
+                hx-trigger="click"
+                hx-swap="outerHTML"
+                hx-target="#likes"
+                >{{"unfollow user" if like.author in current_user.followed.all() else "follow user"}}</a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <br>
+
+    <!--pic date_created-->
+    posted {{ picture.date_created|datetime_format}}
+    <br>
+    <!--pic location-->
+    {% if picture.location != "" %}
+    location: {{picture.location}}
+    <br>
+    {% endif %}
+    <!--pic description-->
+    <a href="{{ url_for('views.profile', id=picture.author.id) }}"><strong>{{ picture.author.username }}: </strong></a> {{ picture.description }}
+</div>

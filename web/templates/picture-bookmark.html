@@ -1,0 +1,9 @@
+ <div id="picture-bookmark">
+     <a
+             hx-get="/bookmark/{{ picture.id }}"
+             hx-trigger="click"
+             hx-swap="outerHTML"
+             hx-target="#picture-bookmark"> <i
+             class="bi {{'bi-bookmark-fill' if picture in current_user.bookmarks else 'bi-bookmark' }} menu-icon mx-2"></i>
+     </a>
+ </div>

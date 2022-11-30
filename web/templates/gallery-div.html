@@ -1,0 +1,46 @@
+{% for picture in pictures[page:page+6] %}
+{% if loop.index is divisibleby 6 %}
+
+<!--gallery item - every 6th picture - sends HTMX request to load new pictures-->
+<a href="{{url_for('views.view_picture', id=picture.id)}}"
+    hx-get="/load-page/{{ user.id }}/{{ page }}"
+    hx-trigger="revealed"
+    hx-swap="afterend">
+    <div class="gallery-item" tabindex="0">
+        <img src="{{ picture.file }}" class="gallery-image">
+        <div class="gallery-item-info">
+            <ul>
+                <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span>
+                    <i class="bi bi-hearts"></i> {{ picture.likes|count }}
+                </li>
+                <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span>
+                    <i class="bi bi-chat-fill"></i> {{ picture.comments|count }}
+                </li>
+            </ul>
+        </div>
+    </div>
+</a>
+<!-- gallery item  end -->
+
+{% else %}
+
+<!-- gallery item - other pictures -->
+<a href="{{url_for('views.view_picture', id=picture.id)}}">
+    <div class="gallery-item" tabindex="0">
+        <img src="{{ picture.file }}" class="gallery-image">
+        <div class="gallery-item-info">
+            <ul>
+                <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span>
+                    <i class="bi bi-hearts"></i> {{ picture.likes|count }}
+                </li>
+                <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span>
+                    <i class="bi bi-chat-fill"></i> {{ picture.comments|count }}
+                </li>
+            </ul>
+        </div>
+    </div>
+</a>
+<!-- gallery item  end -->
+
+{% endif %}
+{% endfor %}

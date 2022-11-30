@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block content %}
+
+<main class="main-container">
+	<div class="container contact">
+		<!-- main section-->
+		<div class="row">
+			<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 mb-5">
+				<img class="post-pic" src="{{picture.file}}" />
+				<hr />
+
+				<!-- dropdown section-->
+				<div class="btn-group dropup right">
+					<a data-bs-toggle="dropdown"> <i class="bi bi-three-dots menu-icon mx-2 text-secondary"></i></a>
+					<div class="dropdown-menu">
+						{% if current_user == picture.author %} {% if picture.private == True %}
+						<a class="dropdown-item" href="{{ url_for('views.change_privacy', id=picture.id) }}">Turn on comments and likes</a>
+						{% else %}
+						<a class="dropdown-item" href="{{ url_for('views.change_privacy', id=picture.id) }}">Turn off comments and likes</a>
+						{% endif %}
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item text-danger" href="{{ url_for('views.delete_picture', id=picture.id) }}">Delete post</a>
+						{% else %}
+						<a class="dropdown-item" href="{{ url_for('views.report_picture', id=picture.id) }}">Report Post</a>
+						{% endif %}
+					</div>
+				</div>
+				<!-- dropdown section end-->
+
+				<!-- "picture-followers section -->
+				{% include "picture-followers-div.html" %}
+				<!-- "picture-followers section end-->
+			</div>
+
+			<!-- comment section-->
+			<div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
+				<div class="row">
+					<!--picture not private-->
+					{% if picture.private != True %}
+					<div class="scrollable">
+						{% for comment in picture.comments %}
+						<!--comment post-->
+						<div class="d-flex justify-content-center py-2 pb-3">
+							<div class="comment-text px-2">
+								{{ comment.text }}
+								<div class="d-flex justify-content-between py-1 pt-2">
+									<div>
+										{% if comment.author %}
+										<a href="{{url_for('views.profile', id=comment.author_id)}}"><img src="{{ comment.author.avatar }}" class="profile-img-small" style="margin-right:15px;" /></a>
+										{% else %}
+										<img src="{{ url_for ('static', filename='img/default-user.png') }}" class="profile-img-small" style="margin-right:15px;" />
+										{% endif %} {% if comment.author %}
+										<span class="text-muted small">posted {{ comment.date_created|datetime_format }} by <a href="{{url_for('views.profile', id=comment.author_id)}}">{{ comment.author.username }}</a></span>
+										{% else %}
+										<span class="text-muted small">posted {{ comment.date_created|datetime_format }} by a deleted user</span>
+										{% endif %}
+									</div>
+
+									<!--comment likes section-->
+									{% include "comment-like.html" %}
+									<!--comment likes section end-->
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+						<!--comment post end-->
+					</div>
+					<div class="row">
+						<hr />
+						<div class="post__buttons">
+							<!--picture likes section-->
+							{% include "picture-like.html" %}
+							<!--picture likes section end-->
+
+							<!--picture bookmark section-->
+							{% include "picture-bookmark.html" %}
+							<!--picture bookmark section end-->
+						</div>
+
+						<form method="post">
+							{{ form.hidden_tag() }}
+							{{ form.text(class="form-control")}}
+							{{ form.submit(class="c-btn-dark mb-2")}}
+						</form>
+
+						<!--if picture private-->
+						{% else %}
+						<p>Comments and likes have been turned off.</p>
+						<hr />
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			<!-- comment section end-->
+		</div>
+
+	</div>
+</main>
+{% endblock %}

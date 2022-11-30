@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+
+<main class="main-container">
+	<section class="content-container">
+		<div class="container contact">
+			<div class="row">
+
+                <!--colored section-->
+				<div class="col-md-3 instagram">
+					<div class="contact-info">
+						<i class="bi bi-search icon-big"></i>
+						<h2>Search</h2>
+						<h4>or not to search, that is the question.</h4>
+					</div>
+				</div>
+
+				<!--content section-->
+				<div class="col-md-9">
+					{% for result in results %}
+					<a href="{{ url_for('views.profile', id=result.id) }}" class="left black"> <img src="{{ result.avatar }}" class="mx-2 profile-img-small" />{{ result.username }}</a><br />
+					<br />
+					{% endfor %}
+
+					<hr />
+					<!--pagination buttons-->
+					<div class="mx-2 btn btn-outline-secondary{% if not prev_url %} disabled{% endif %}">
+						<a href="{{ prev_url or '#' }}" class="black">
+							<span>&larr;</span>
+							{{ ('Previous results') }}
+						</a>
+					</div>
+					|
+					<div class="mx-2 btn btn-outline-secondary{% if not next_url %} disabled{% endif %}">
+						<a href="{{ next_url or '#' }}" class="black">
+							{{ ('Next results') }}
+							<span>&rarr;</span>
+						</a>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
+</main>
+
+{% endblock %}

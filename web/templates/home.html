@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+
+<main class="main-container">
+	<section class="content-container">
+
+		<!--main section-->
+        <div class="content">
+            <!--stories section-->
+			<div class="stories">
+				<div class="stories__content">
+					<!--add new story -->
+					<a href="{{url_for('views.upload_story')}}">
+					<button class="story story--has-story">
+						<div class="story__avatar">
+							<div class="story__border"></div>
+							<div class="story__picture">
+								<img src="{{url_for ('static', filename='img/new-story.png')}}" alt="User Picture" />
+							</div>
+						</div>
+						<span class="story__user">new story</span>
+					</button></a>
+					<!--story - div loads updated modal content on mouse enter -->
+					{% for story in stories[0:6] %}
+					<div hx-get="/load-modal/{{ loop.index0 }}"
+						hx-target="#stories-modal"
+						hx-trigger="mouseenter"
+						hx-swap="outerHTML">
+					<button class="story story--has-story" type="button" data-bs-toggle="modal" data-bs-target="#stories-modal">
+						<a><div class="story__avatar">
+							<div class="story__border"></div>
+							<div class="story__picture">
+								<img src="{{ story.author.avatar }}">
+							</div>
+						</div></a>
+						<span class="story__user">{{ story.author.username }}</span>
+					</button></div>
+					{% endfor %}
+					<!--story end -->
+				</div>
+			</div>
+			<!--stories section end -->
+
+
+			<!-- modal section - replaced by HTMX call by "story-modal.html" -->
+			<div class="modal fade modal-lg" id="stories-modal" tabindex="-1">
+			</div>
+			<!--modal end-->
+
+			<!--posts section-->
+			<div class="posts">
+				{% include "home-feed.html" %}
+			</div>
+			<!--posts section end-->
+		</div>
+        <!--main section end-->
+
+		<!--side-menu section-->
+				{% include "side-menu.html" %}
+		<!--side-menu section end-->
+
+	</section>
+</main>
+{% endblock %}

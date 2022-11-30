@@ -1,0 +1,11 @@
+<div class="right" id="likes-count-{{comment.id}}">
+    <a
+        hx-get="/like-comment/{{ comment.id }}"
+        hx-trigger="click"
+        hx-swap="outerHTML"
+        hx-target="#likes-count-{{comment.id}}">
+        <!--check if user liked this comment and change classes -->
+        <i class="bi {{'bi-heart-fill' if current_user.id in comment.likes|map(attribute='author_id')|list else 'bi-heart' }} m-2 text-danger"></i>
+    </a>
+    {{ comment.likes|count }}
+</div>

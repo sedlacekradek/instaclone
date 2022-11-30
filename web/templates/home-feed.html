@@ -1,0 +1,103 @@
+{% for picture in pictures[page:page+6] %}
+
+{% if loop.index is divisibleby 6 %}
+<!--post - every 6th picture - sends HTMX request to load new pictures-->
+<article class="post" hx-get="/load-page/{{ current_user.id }}/{{ page }}" hx-trigger="revealed" hx-swap="afterend">
+
+    <!--header-->
+    <div class="post__header">
+		<div class="post__profile">
+			<a href="{{ url_for('views.profile', id=picture.author.id) }}" class="post__avatar">
+				<img src="{{ picture.author.avatar }}" alt="User Picture" />
+			</a>
+			<a href="{{ url_for('views.profile', id=picture.author.id) }}" class="post__user black fw-bold"> {{ picture.author.username }}</a>
+		</div>
+
+        <!--dropdown-->
+		<div class="btn-group dropup right">
+			<a data-bs-toggle="dropdown"> <i class="bi bi-three-dots menu-icon mx-2"></i></a>
+			<div class="dropdown-menu">
+				{% if current_user == picture.author %}
+                    {% if picture.private == True %}
+                        <a class="dropdown-item" href="{{ url_for('views.change_privacy', id=picture.id) }}">Turn on comments and likes</a>
+                        {% else %}
+                        <a class="dropdown-item" href="{{ url_for('views.change_privacy', id=picture.id) }}">Turn off comments and likes</a>
+                    {% endif %}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item text-danger" href="{{ url_for('views.delete_picture', id=picture.id) }}">Delete post</a>
+                    {% else %}
+                    <a class="dropdown-item" href="{{ url_for('views.report_picture', id=picture.id) }}">Report Post</a>
+				{% endif %}
+			</div>
+		</div>
+        <!--dropdown end-->
+	</div>
+    <!--header end-->
+
+    <!--post content-->
+	<div class="post__content">
+		<div class="post__medias">
+			<a href="{{url_for('views.view_picture', id=picture.id)}}"> <img class="post__media" src="{{ picture.file }}" alt="Post Content" /></a>
+		</div>
+	</div>
+    <!--content end-->
+
+    <!--footer-->
+	{% include "post-footer.html" %}
+    <!--footer end-->
+
+</article>
+<!--post end-->
+
+{% else %}
+
+<!--post -->
+<article class="post">
+
+    <!--header-->
+    <div class="post__header">
+		<div class="post__profile">
+			<a href="{{ url_for('views.profile', id=picture.author.id) }}" class="post__avatar">
+				<img src="{{ picture.author.avatar }}" alt="User Picture" />
+			</a>
+			<a href="{{ url_for('views.profile', id=picture.author.id) }}" class="post__user black fw-bold"> {{ picture.author.username }}</a>
+		</div>
+
+        <!--dropdown section-->
+		<div class="btn-group dropup right">
+			<a data-bs-toggle="dropdown"> <i class="bi bi-three-dots menu-icon mx-2"></i></a>
+			<div class="dropdown-menu">
+				{% if current_user == picture.author %}
+                    {% if picture.private == True %}
+                        <a class="dropdown-item" href="{{ url_for('views.change_privacy', id=picture.id) }}">Turn on comments and likes</a>
+                        {% else %}
+                        <a class="dropdown-item" href="{{ url_for('views.change_privacy', id=picture.id) }}">Turn off comments and likes</a>
+                    {% endif %}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item text-danger" href="{{ url_for('views.delete_picture', id=picture.id) }}">Delete post</a>
+                    {% else %}
+                    <a class="dropdown-item" href="{{ url_for('views.report_picture', id=picture.id) }}">Report Post</a>
+				{% endif %}
+			</div>
+		</div>
+        <!--dropdown section end-->
+	</div>
+    <!--header end-->
+
+    <!--content-->
+	<div class="post__content">
+		<div class="post__medias">
+			<a href="{{url_for('views.view_picture', id=picture.id)}}"> <img class="post__media" src="{{ picture.file }}" alt="Post Content" /></a>
+		</div>
+	</div>
+    <!--content end-->
+
+    <!--footer-->
+	{% include "post-footer.html" %}
+    <!--footer end-->
+
+</article>
+<!--post end-->
+{% endif %}
+
+{% endfor %}

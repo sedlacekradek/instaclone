@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+
+<main class="main-container">
+	<section class="content-container">
+		<div class="container contact">
+			<div class="row">
+
+                <!--colored section-->
+				<div class="col-md-3 instagram">
+					<div class="contact-info">
+						<a class="a-inherit" href="{{url_for ('views.profile', id=user.id)}}">
+							<img src="{{ user.avatar }}" class="icon-big rounded-circle" />
+							<h2>Chat</h2>
+							<p>{{ user.username }}</p>
+						</a>
+					</div>
+				</div>
+
+                <!--content section-->
+				<div class="col-md-9 px-0">
+                    <div class="scrollable">
+                        <!--message div-->
+						{% if user != current_user %}
+                        {% include "messages-div.html" %}
+					</div>
+					 <!--message form if users not blocked-->
+                    {% if current_user not in user.blocked and user not in current_user.blocked %}
+					<form method="POST" enctype="multipart/form-data">
+						{{ form.hidden_tag() }}
+						<div class="mx-3">
+							{{ form.text(class="form-control border")}}
+						</div>
+						<br />
+						<div class="row mx-5">
+							{{form.submit(class="btn btn-dark")}}
+							<!--error message-->
+							{% for field, errors in form.errors.items() %}
+							<br />
+							<br />
+							<small class="form-text text-danger">
+								{{ ', '.join(errors) }}
+							</small>
+							{% endfor %}
+						</div>
+					</form>
+					 <!--if users blocked-->
+                    {% else %}
+                    You cannot send messages to this user.
+                    {% endif %}
+                    <!--if users tries to chat with themselves-->
+                    {% else %}
+					<h2>Need somebody to talk to?</h2>
+					{% endif %}
+				</div>
+
+			</div>
+		</div>
+	</section>
+</main>
+{% endblock %}

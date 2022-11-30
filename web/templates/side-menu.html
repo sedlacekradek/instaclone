@@ -1,0 +1,57 @@
+<section class="side-menu">
+    <div class="side-menu__suggestions-section">
+        <div class="side-menu__suggestions-header">
+            <h2>Suggestions for You</h2>
+        </div>
+        <div class="side-menu__suggestions-content">
+
+            <!--side-menu recommendation section -->
+            {% for user, followed in followed_by_friends[0:4] %}
+            <!--to avoid duplicated recommendations-->
+            {% if user not in follows_you %}
+            <div class="side-menu__suggestion">
+                <a href="{{ url_for ('views.profile', id=user.id) }}" class="side-menu__suggestion-avatar">
+                    <img src="{{ user.avatar }}"/>
+                </a>
+                <div class="side-menu__suggestion-info left">
+                    <a href="{{ url_for ('views.profile', id=user.id) }}">{{ user.username }}</a>
+                    <!--list "mutual friends", with links to their profiles, if multiple users, add commas-->
+                    <span>Followed by {% for follower in followed %}<a
+                            href="{{ url_for ('views.profile', id=follower.id) }}">{{ follower.username }}</a>{% if followed|count > 1 %}, {% endif %}{% endfor %}</span>
+                </div>
+                <a href="{{ url_for ('views.profile', id=user.id) }}">
+                    <button class="side-menu__suggestion-button">View</button>
+                </a>
+            </div>
+            {% endif %}
+            {% endfor %}
+
+            {% for user in follows_you[0:4] %}
+            <div class="side-menu__suggestion">
+                <a href="{{ url_for ('views.profile', id=user.id) }}" class="side-menu__suggestion-avatar">
+                    <img src="{{ user.avatar }}"/>
+                </a>
+                <div class="side-menu__suggestion-info left">
+                    <a href="{{ url_for ('views.profile', id=user.id) }}">{{ user.username }}</a>
+
+                    <span>Follows you</span>
+                </div>
+                <a href="{{ url_for ('views.profile', id=user.id) }}">
+                    <button class="side-menu__suggestion-button">View</button>
+                </a>
+            </div>
+            {% endfor %}
+            <!--side-menu recommendation section end -->
+        </div>
+    </div>
+
+    <!--side-menu footer-->
+    <hr/>
+    <span >
+    <a href="{{ url_for ('views.disclaimer') }}" class="side-menu__footer-copyright">disclaimer and attribution</a>
+    <br>
+    <a href="{{ url_for ('views.api_docs') }}" class="side-menu__footer-copyright">api for devs</a>
+    </span>
+    <!--side-menu footer end-->
+
+</section>

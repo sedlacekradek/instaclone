@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+{% include "_header.html" %}
+
+<body>
+
+{% if current_user.is_authenticated %}
+{% include "_navbar.html" %}
+{% endif %}
+
+{% include "_alerts.html" %}
+
+<!--main content-->
+{% block content %}
+{% endblock %}
+
+{% include "_scripts.html" %}
+
+</body>
+</html>

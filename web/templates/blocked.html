@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+
+<main class="main-container">
+	<section class="content-container">
+		<div class="container contact">
+			<div class="row">
+
+                <!--colored section-->
+				<div class="col-md-3 instagram">
+					<div class="contact-info">
+						<i class="bi bi-person-dash icon-big"></i>
+						<h2>Blocked Users</h2>
+						<h4>no following, no stories, no pictures, only peace of mind</h4>
+					</div>
+				</div>
+
+				<!--content section-->
+				{% include "blocked-div.html" %}
+
+			</div>
+		</div>
+	</section>
+</main>
+
+{% endblock %}

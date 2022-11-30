@@ -1,0 +1,17 @@
+<div class="col-md-9" id="blocked-div">
+
+    {% for blocked in current_user.blocked.all() %}
+	<div class="mt-1 h4">
+		<img src="{{ blocked.avatar }}" class="profile-img-big mx-1" />
+		<a class="black" href="{{url_for('views.profile', id=blocked.id)}}">{{ blocked.username }}</a>
+		<button class="mx-3 mb-2 btn btn-outline-danger btn"
+                hx-get="/block/{{ blocked.id }}"
+                hx-trigger="click"
+                hx-swap="outerHTML"
+                hx-target="#blocked-div">
+            unblock user
+        </button>
+		{% endfor %}
+	</div>
+
+</div>

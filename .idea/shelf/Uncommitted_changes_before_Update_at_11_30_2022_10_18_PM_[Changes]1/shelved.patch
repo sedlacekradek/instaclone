@@ -1,0 +1,28 @@
+Index: app.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from web import create_app\r\n\r\n\r\napp = create_app()\r\n\r\n\r\n### TO RUN LOCALLY ###\r\n# if __name__ == \"__main__\":\r\n#     app = create_app()\r\n    # app.run(debug=True)\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app.py b/app.py
+--- a/app.py	
++++ b/app.py	
+@@ -1,10 +1,10 @@
+ from web import create_app
+ 
+ 
+-app = create_app()
+-
+-
+-### TO RUN LOCALLY ###
+-# if __name__ == "__main__":
+-#     app = create_app()
+-    # app.run(debug=True)
++# app = create_app()
++
++
++### TO RUN LOCALLY ###
++if __name__ == "__main__":
++    app = create_app()
++    app.run(debug=True)

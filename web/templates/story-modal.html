@@ -1,0 +1,47 @@
+<div class="modal fade modal-sm" id="stories-modal" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div id="carousel" class="carousel slide" data-bs-ride="carousel">
+
+                <!--carousel icons-->
+                <div class="carousel-indicators">
+					{% for story in stories %}
+					<button type="button" data-bs-target="#carousel" data-bs-slide-to="{{ loop.index0 }}" class="{{ 'active' if active_story==loop.index0 }}"></button>
+					{% endfor %}
+				</div>
+
+                <!--carousel body-->
+				<div class="carousel-inner">
+					{% for story in stories %}
+					<div class="carousel-item {{ 'active' if active_story == loop.index0 }}">
+						<!--edge case guard - make sure story has not expired -->
+						{% if story.file %}
+						<a href=" {{ url_for('views.profile', id=story.author.id) }}" class="a-inherit top-left">
+							<img src="{{ story.author.avatar }}" class="my-modal-image" /> {{ story.author.username }} posted {{ story.date_created|datetime_format }}
+						</a>
+						<img src="{{ story.file }}" class="d-block modal-pic" />
+						<!--if story expired -->
+                        {% else %}
+						<h1>This story has expired.</h1>
+						{% endif %}
+						<div class="carousel-caption">
+							<button type="button" class="btn m-0 btn-outline-light" data-bs-dismiss="modal">Close</button>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+
+                <!--prev and next buttons-->
+				<button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+					<span class="carousel-control-prev-icon"></span>
+					<span class="visually-hidden">Previous</span>
+				</button>
+				<button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+					<span class="carousel-control-next-icon"></span>
+					<span class="visually-hidden">Next</span>
+				</button>
+
+			</div>
+		</div>
+	</div>
+</div>
